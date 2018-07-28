@@ -42,3 +42,15 @@ nav a {
   margin: 0 auto;
   padding-top: 180px;
 }
+
+.shorten-btn {
+  margin-top: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  #url-form-div {
+    min-width: 300px;
+    max-width: 300px;
+  }
+}

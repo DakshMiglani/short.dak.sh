@@ -1,7 +1,7 @@
 import React from "react";
 import Axios from "axios";
 import Fingerprint from "fingerprintjs2";
-import { Form as FormUI, Button } from "@auth0/cosmos";
+import { Form as FormUI, Button, TextInput } from "@auth0/cosmos";
 import { isValidURL } from "./utils";
 import { API } from "../constants";
 
@@ -86,7 +86,13 @@ class Form extends React.Component {
             error={this.state.error}
             disabled={this.state.disabled}
           />
+          <TextInput
+            disabled
+            placeholder="Your Shortened Link here."
+            value={this.state.url}
+          />
           <Button
+            className="shorten-btn"
             size="large"
             appearance="default"
             icon="hooks"
