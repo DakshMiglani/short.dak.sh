@@ -1,6 +1,8 @@
 import React from "react";
+import Axios from "axios";
 import { Form as FormUI, Button } from "@auth0/cosmos";
 import { isValidURL } from "./utils";
+import { API } from "../constants";
 
 class Form extends React.Component {
   state = {
@@ -8,11 +10,12 @@ class Form extends React.Component {
     disabled: false,
     success: false,
     loading: false,
-    error: ""
+    error: "",
+    url: ""
   };
 
   changeValue = e => {
-    this.setState({ text: e.target.value });
+    this.setState({ text: e.target.value, success: false });
   };
 
   submit = e => {
@@ -23,6 +26,37 @@ class Form extends React.Component {
         disabled: false,
         loading: false,
         error: "The Field is either empty or The Link / URL is wrong."
+      });
+      return;
+    }
+    this.sendXhrRequest(this.state.text);
+  };
+
+  sendXhrRequest = async url => {
+    try {
+      const res = await Axios({
+        method: "POST",
+        url: API,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: JSON.stringify({ url }),
+        json: true
+      });
+
+      if (res.data && !res.data.error) {
+        this.setState({
+          url: res.data.url,
+          loading: false,
+          disabled: false,
+          success: true
+        });
+      }
+    } catch (e) {
+      this.setState({
+        disabled: false,
+        loading: false,
+        error: "Failed while shortening, please try again later."
       });
     }
   };
@@ -38,6 +72,7 @@ class Form extends React.Component {
             onChange={this.changeValue}
             value={this.state.text}
             error={this.state.error}
+            disabled={this.state.disabled}
           />
           <Button
             size="large"
