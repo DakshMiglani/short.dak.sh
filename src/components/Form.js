@@ -52,7 +52,7 @@ class Form extends React.Component {
         headers: {
           "Content-Type": "application/json"
         },
-        data: JSON.stringify({ url }),
+        data: JSON.stringify({ url, createdBy }),
         json: true
       });
 
