@@ -1,5 +1,6 @@
 import React from "react";
 import Axios from "axios";
+import Fingerprint from "fingerprintjs2";
 import { Form as FormUI, Button } from "@auth0/cosmos";
 import { isValidURL } from "./utils";
 import { API } from "../constants";
@@ -13,6 +14,14 @@ class Form extends React.Component {
     error: "",
     url: ""
   };
+
+  componentDidMount() {
+    setTimeout(() => {
+      new Fingerprint().get((res, components) => {
+        localStorage.setItem("browser-fingerprint", res);
+      });
+    }, 500);
+  }
 
   changeValue = e => {
     this.setState({ text: e.target.value, success: false });
@@ -29,10 +38,13 @@ class Form extends React.Component {
       });
       return;
     }
-    this.sendXhrRequest(this.state.text);
+    this.sendXhrRequest(
+      this.state.text,
+      localStorage.getItem("browser-fingerprint")
+    );
   };
 
-  sendXhrRequest = async url => {
+  sendXhrRequest = async (url, createdBy) => {
     try {
       const res = await Axios({
         method: "POST",
