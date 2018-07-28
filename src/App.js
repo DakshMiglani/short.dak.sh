@@ -1,8 +1,13 @@
 import React from "react";
+import Navbar from "./components/Navbar";
 
 class App extends React.Component {
   render() {
-    return <React.Fragment />;
+    return (
+      <div>
+        <Navbar />
+      </div>
+    );
   }
 }
 
